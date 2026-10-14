@@ -1,202 +1,173 @@
-namespace Lab2;
+using System;
+using System.Collections.Generic;
 
-internal class Time
+namespace Lab2
 {
-    private int seconds;
-
-    public Time(int seconds)
+    // Задание 1.4 Время
+    internal class Time
     {
-        this.seconds = seconds % 86400;
-        if (this.seconds < 0)
+        private int seconds;
+
+        public Time(int seconds)
         {
-            this.seconds += 86400;
+            this.seconds = seconds;
+        }
+
+        public override string ToString()
+        {
+            int totalSeconds = this.seconds % 86400;
+            int hours = totalSeconds / 3600;
+            int minutes = (totalSeconds % 3600) / 60;
+            int secs = totalSeconds % 60;
+            string result = hours.ToString("00") + ":" + minutes.ToString("00") + ":" + secs.ToString("00");
+            return result;
         }
     }
 
-    public int Hours
+    // Задание 1.5 Дом
+    internal class House
     {
-        get { return this.seconds / 3600; }
-    }
+        private int floors;
 
-    public int Minutes
-    {
-        get { return this.seconds / 60 % 60; }
-    }
-
-    public int Seconds
-    {
-        get { return this.seconds % 60; }
-    }
-
-    public override string ToString()
-    {
-        return $"{Hours}:{Minutes:00}:{Seconds:00}";
-    }
-}
-
-internal class House
-{
-    private readonly int floors;
-
-    public House(int floors)
-    {
-        this.floors = floors;
-    }
-
-    public int Floors
-    {
-        get { return this.floors; }
-    }
-
-    public override string ToString()
-    {
-        int lastTwo = this.floors % 100;
-        int last = this.floors % 10;
-        string word = "этажей";
-        if (lastTwo < 11 || lastTwo > 14)
+        public House(int floors)
         {
-            if (last == 1)
+            this.floors = floors;
+        }
+
+        public int Floors
+        {
+            get { return this.floors; }
+        }
+
+        public override string ToString()
+        {
+            string word = "этажами";
+            if (this.floors % 10 == 1 && this.floors % 100 != 11)
             {
-                word = "этаж";
+                word = "этажом";
             }
-            if (last >= 2 && last <= 4)
+            return "дом с " + this.floors + " " + word;
+        }
+    }
+
+    // Задание 2.4 Сотрудники и отделы
+    internal class Employee
+    {
+        private string name;
+        private Department department;
+
+        public Employee(string name)
+        {
+            this.name = name;
+            this.department = null;
+        }
+
+        public string Name
+        {
+            get { return this.name; }
+        }
+
+        public Department Department
+        {
+            get { return this.department; }
+            set
             {
-                word = "этажа";
+                this.department = value;
+                if (value != null)
+                {
+                    value.AddEmployee(this);
+                }
             }
         }
-        return $"дом с {this.floors} {word}";
-    }
-}
 
-internal class Department
-{
-    private string name;
-    private Employee manager;
-    private Employee[] employees;
-
-    public Department(string name)
-    {
-        this.name = name;
-        this.manager = null;
-        this.employees = new Employee[0];
-    }
-
-    public string Name
-    {
-        get { return this.name; }
-        set { this.name = value; }
-    }
-
-    public Employee Manager
-    {
-        get { return this.manager; }
-        set { this.manager = value; }
-    }
-
-    public Employee[] Employees
-    {
-        get { return this.employees; }
-    }
-
-    public void AddEmployee(Employee employee)
-    {
-        int index = 0;
-        int length = this.employees.Length + 1;
-        Employee[] result = new Employee[length];
-        for (index = 0; index < this.employees.Length; index++)
+        // Задание 3.4 Получить список сотрудников своего отдела
+        public List<Employee> GetDepartmentEmployees()
         {
-            if (this.employees[index] == employee)
+            if (this.department == null)
             {
-                return;
+                return new List<Employee>();
             }
-            result[index] = this.employees[index];
+            return this.department.Employees;
         }
-        result[this.employees.Length] = employee;
-        this.employees = result;
-    }
 
-    public override string ToString()
-    {
-        return this.name;
-    }
-}
-
-internal class Employee
-{
-    private string name;
-    private Department department;
-
-    public Employee(string name, Department department)
-    {
-        this.name = name;
-        this.department = department;
-        this.department.AddEmployee(this);
-    }
-
-    public string Name
-    {
-        get { return this.name; }
-        set { this.name = value; }
-    }
-
-    public Department Department
-    {
-        get { return this.department; }
-        set { this.department = value; }
-    }
-
-    public override string ToString()
-    {
-        string result = this.name;
-        if (this.department.Manager == this)
+        public override string ToString()
         {
-            return result + " начальник отдела "
-                + this.department;
+            if (this.department == null)
+            {
+                return this.name + " не работает в отделе";
+            }
+            if (this.department.Boss == this)
+            {
+                return this.name + " начальник отдела " + this.department.Name;
+            }
+            return this.name + " работает в отделе " + this.department.Name + ", начальник которого " + this.department.Boss.Name;
         }
-        result += " работает в отделе " + this.department;
-        result += ", начальник которого ";
-        if (this.department.Manager == null)
+    }
+
+    internal class Department
+    {
+        private string name;
+        private Employee boss;
+        private List<Employee> employees;
+
+        public Department(string name, Employee boss)
         {
-            return result + "не назначен";
+            this.name = name;
+            this.boss = boss;
+            this.employees = new List<Employee>();
         }
-        return result + this.department.Manager.Name;
-    }
-}
 
-internal class Gun
-{
-    private int bullets;
-
-    public Gun()
-        : this(5)
-    {
-    }
-
-    public Gun(int bullets)
-    {
-        this.bullets = bullets;
-    }
-
-    public int Bullets
-    {
-        get { return this.bullets; }
-    }
-
-    public void Shoot()
-    {
-        if (this.bullets > 0)
+        public string Name
         {
-            Console.WriteLine("Бах!");
-            this.bullets--;
+            get { return this.name; }
         }
-        else
+
+        public Employee Boss
         {
-            Console.WriteLine("Клац!");
+            get { return this.boss; }
+        }
+
+        // Задание 3.4 Список сотрудников отдела
+        public List<Employee> Employees
+        {
+            get { return this.employees; }
+        }
+
+        public void AddEmployee(Employee employee)
+        {
+            if (!this.employees.Contains(employee))
+            {
+                this.employees.Add(employee);
+            }
         }
     }
 
-    public override string ToString()
+    // Задание 5.1 Пистолет
+    internal class Gun
     {
-        return "Патронов: " + this.bullets;
+        private int bullets;
+
+        public Gun()
+        {
+            this.bullets = 5;
+        }
+
+        public Gun(int bullets)
+        {
+            this.bullets = bullets;
+        }
+
+        public void Shoot()
+        {
+            if (this.bullets > 0)
+            {
+                Console.WriteLine("Бах!");
+                this.bullets = this.bullets - 1;
+            }
+            else
+            {
+                Console.WriteLine("Клац!");
+            }
+        }
     }
 }
