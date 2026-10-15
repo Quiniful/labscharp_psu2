@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 namespace Lab2
 {
-    // Задание 1.4 Время
     internal class Time
     {
         private int seconds;
@@ -24,7 +23,6 @@ namespace Lab2
         }
     }
 
-    // Задание 1.5 Дом
     internal class House
     {
         private int floors;
@@ -50,7 +48,6 @@ namespace Lab2
         }
     }
 
-    // Задание 2.4 Сотрудники и отделы
     internal class Employee
     {
         private string name;
@@ -80,7 +77,6 @@ namespace Lab2
             }
         }
 
-        // Задание 3.4 Получить список сотрудников своего отдела
         public List<Employee> GetDepartmentEmployees()
         {
             if (this.department == null)
@@ -127,7 +123,6 @@ namespace Lab2
             get { return this.boss; }
         }
 
-        // Задание 3.4 Список сотрудников отдела
         public List<Employee> Employees
         {
             get { return this.employees; }
@@ -142,7 +137,6 @@ namespace Lab2
         }
     }
 
-    // Задание 5.1 Пистолет
     internal class Gun
     {
         private int bullets;
