@@ -18,7 +18,9 @@ namespace Lab2
             int hours = totalSeconds / 3600;
             int minutes = (totalSeconds % 3600) / 60;
             int secs = totalSeconds % 60;
-            string result = hours.ToString("00") + ":" + minutes.ToString("00") + ":" + secs.ToString("00");
+            string result = hours.ToString("00")
+                + ":" + minutes.ToString("00")
+                + ":" + secs.ToString("00");
             return result;
         }
     }
@@ -98,9 +100,12 @@ namespace Lab2
             }
             if (this.department.Boss == this)
             {
-                return this.name + " начальник отдела " + this.department.Name;
+                return this.name + " начальник отдела "
+                    + this.department.Name;
             }
-            return this.name + " работает в отделе " + this.department.Name + ", начальник которого " + this.department.Boss.Name;
+            return this.name + " работает в отделе "
+                + this.department.Name + ", начальник которого "
+                + this.department.Boss.Name;
         }
     }
 

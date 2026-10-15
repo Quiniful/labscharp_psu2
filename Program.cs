@@ -13,7 +13,8 @@ namespace Lab2
             int timeIndex = 0;
             int seconds = 0;
             Time time = null;
-            for (timeIndex = 0; timeIndex < timeCount; timeIndex++)
+            for (timeIndex = 0; timeIndex < timeCount;
+                timeIndex++)
             {
                 seconds = ReadNonNegativeInt(
                     "Введите количество секунд: ");
@@ -24,23 +25,32 @@ namespace Lab2
             Console.WriteLine("\n=== Задание 1.5 Дом ===");
             ShowHouses("Введите количество домов: ");
 
-            Console.WriteLine("\n=== Задание 2.4 Сотрудники и отделы ===");
+            Console.WriteLine(
+                "\n=== Задание 2.4 Сотрудники и отделы ===");
             List<Employee> allEmployees = ReadEmployees();
             List<Department> departments =
                 WorkWithDepartment(allEmployees);
 
-            Console.WriteLine("\n=== Задание 3.4 Список сотрудников отдела ===");
+            Console.WriteLine(
+                "\n=== Задание 3.4 Список "
+                + "сотрудников отдела ===");
             PrintDepartmentEmployees(departments);
 
-            Console.WriteLine("\n=== Задание 4.3 Создаем Дом ===");
+            Console.WriteLine(
+                "\n=== Задание 4.3 Создаем Дом ===");
             ShowHouses("Введите количество домов: ");
-            Console.WriteLine("Изменить количество этажей нельзя - у класса нет сеттера.");
+            Console.WriteLine(
+                "Изменить количество этажей нельзя - "
+                + "у класса нет сеттера.");
 
             Console.WriteLine("\n=== Задание 5.1 Пистолет ===");
             Console.WriteLine("Создать пистолет:");
-            Console.WriteLine("1 - без указания патронов (по умолчанию 5)");
-            Console.WriteLine("2 - с указанием количества патронов");
-            int gunChoice = ReadIntInRange("Ваш выбор (1-2): ", 1, 2);
+            Console.WriteLine(
+                "1 - без указания патронов (по умолчанию 5)");
+            Console.WriteLine(
+                "2 - с указанием количества патронов");
+            int gunChoice = ReadIntInRange(
+                "Ваш выбор (1-2): ", 1, 2);
 
             Gun gun = null;
             if (gunChoice == 1)
@@ -49,11 +59,13 @@ namespace Lab2
             }
             else
             {
-                int bullets = ReadNonNegativeInt("Введите начальное количество патронов: ");
+                int bullets = ReadNonNegativeInt(
+                    "Введите начальное количество патронов: ");
                 gun = new Gun(bullets);
             }
 
-            int shots = ReadNonNegativeInt("Введите количество выстрелов: ");
+            int shots = ReadNonNegativeInt(
+                "Введите количество выстрелов: ");
             int j = 0;
             for (j = 0; j < shots; j++)
             {
@@ -69,7 +81,8 @@ namespace Lab2
             House house = null;
             for (index = 0; index < count; index++)
             {
-                floors = ReadPositiveInt("Введите количество этажей: ");
+                floors = ReadPositiveInt(
+                    "Введите количество этажей: ");
                 house = new House(floors);
                 Console.WriteLine(house);
             }
@@ -78,7 +91,8 @@ namespace Lab2
         private static List<Employee> ReadEmployees()
         {
             List<Employee> employees = new List<Employee>();
-            int count = ReadPositiveInt("Введите количество сотрудников: ");
+            int count = ReadPositiveInt(
+                "Введите количество сотрудников: ");
             int index = 0;
             string name = "";
             Employee employee = null;
@@ -128,7 +142,8 @@ namespace Lab2
             List<Employee> employees,
             List<Department> departments)
         {
-            Department department = SelectDepartment(departments);
+            Department department = SelectDepartment(
+                departments);
             string employeeName = ReadNonEmptyString(
                 "Введите имя сотрудника: ");
             Employee employee = FindEmployee(
@@ -202,7 +217,8 @@ namespace Lab2
             while (boss == null || boss.Department != department)
             {
                 Console.WriteLine(
-                    "Начальник должен быть сотрудником этого отдела.");
+                    "Начальник должен быть сотрудником "
+                        + "этого отдела.");
                 bossName = ReadNonEmptyString(
                     "Введите имя начальника: ");
                 boss = FindEmployee(employees, bossName);
@@ -237,13 +253,15 @@ namespace Lab2
                 Console.WriteLine("В отделе нет сотрудников.");
                 return;
             }
-            for (index = 0; index < department.Employees.Count; index++)
+            for (index = 0;
+                index < department.Employees.Count; index++)
             {
                 Console.WriteLine(department.Employees[index]);
             }
         }
 
-        private static Employee FindEmployee(List<Employee> employees, string name)
+        private static Employee FindEmployee(
+            List<Employee> employees, string name)
         {
             int i = 0;
             for (i = 0; i < employees.Count; i++)
@@ -266,23 +284,30 @@ namespace Lab2
                 string input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine("Ошибка! Ввод прерван. Попробуйте ещё раз.");
+                    Console.WriteLine(
+                        "Ошибка! Ввод прерван. "
+                        + "Попробуйте ещё раз.");
                     continue;
                 }
                 input = input.Trim();
                 if (input == "")
                 {
-                    Console.WriteLine("Ошибка! Строка пустая. Введите целое число.");
+                    Console.WriteLine(
+                        "Ошибка! Строка пустая. "
+                        + "Введите целое число.");
                     continue;
                 }
                 if (!int.TryParse(input, out result))
                 {
-                    Console.WriteLine("Ошибка! Введено не целое число.");
+                    Console.WriteLine(
+                        "Ошибка! Введено не целое число.");
                     continue;
                 }
                 if (result < 0)
                 {
-                    Console.WriteLine("Ошибка! Число не может быть отрицательным.");
+                    Console.WriteLine(
+                        "Ошибка! Число не может быть "
+                        + "отрицательным.");
                     continue;
                 }
                 ok = true;
@@ -300,23 +325,30 @@ namespace Lab2
                 string input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine("Ошибка! Ввод прерван. Попробуйте ещё раз.");
+                    Console.WriteLine(
+                        "Ошибка! Ввод прерван. "
+                        + "Попробуйте ещё раз.");
                     continue;
                 }
                 input = input.Trim();
                 if (input == "")
                 {
-                    Console.WriteLine("Ошибка! Строка пустая. Введите целое число.");
+                    Console.WriteLine(
+                        "Ошибка! Строка пустая. "
+                        + "Введите целое число.");
                     continue;
                 }
                 if (!int.TryParse(input, out result))
                 {
-                    Console.WriteLine("Ошибка! Введено не целое число.");
+                    Console.WriteLine(
+                        "Ошибка! Введено не целое число.");
                     continue;
                 }
                 if (result <= 0)
                 {
-                    Console.WriteLine("Ошибка! Число должно быть больше нуля.");
+                    Console.WriteLine(
+                        "Ошибка! Число должно быть "
+                        + "больше нуля.");
                     continue;
                 }
                 ok = true;
@@ -324,7 +356,8 @@ namespace Lab2
             return result;
         }
 
-        private static int ReadIntInRange(string message, int min, int max)
+        private static int ReadIntInRange(
+            string message, int min, int max)
         {
             int result = 0;
             bool ok = false;
@@ -334,23 +367,30 @@ namespace Lab2
                 string input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine("Ошибка! Ввод прерван. Попробуйте ещё раз.");
+                    Console.WriteLine(
+                        "Ошибка! Ввод прерван. "
+                        + "Попробуйте ещё раз.");
                     continue;
                 }
                 input = input.Trim();
                 if (input == "")
                 {
-                    Console.WriteLine("Ошибка! Строка пустая. Введите целое число.");
+                    Console.WriteLine(
+                        "Ошибка! Строка пустая. "
+                        + "Введите целое число.");
                     continue;
                 }
                 if (!int.TryParse(input, out result))
                 {
-                    Console.WriteLine("Ошибка! Введено не целое число.");
+                    Console.WriteLine(
+                        "Ошибка! Введено не целое число.");
                     continue;
                 }
                 if (result < min || result > max)
                 {
-                    Console.WriteLine("Ошибка! Число должно быть от " + min + " до " + max + ".");
+                    Console.WriteLine(
+                        "Ошибка! Число должно быть от " + min
+                        + " до " + max + ".");
                     continue;
                 }
                 ok = true;
@@ -367,13 +407,16 @@ namespace Lab2
                 string input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine("Ошибка! Ввод прерван. Попробуйте ещё раз.");
+                    Console.WriteLine(
+                        "Ошибка! Ввод прерван. "
+                        + "Попробуйте ещё раз.");
                     continue;
                 }
                 input = input.Trim();
                 if (input == "")
                 {
-                    Console.WriteLine("Ошибка! Строка не может быть пустой.");
+                    Console.WriteLine(
+                        "Ошибка! Строка не может быть пустой.");
                     continue;
                 }
                 result = input;
@@ -382,7 +425,8 @@ namespace Lab2
             return result;
         }
 
-        private static string ReadUniqueName(string message, List<Employee> employees)
+        private static string ReadUniqueName(
+            string message, List<Employee> employees)
         {
             string result = "";
             while (true)
@@ -401,7 +445,9 @@ namespace Lab2
 
                 if (exists)
                 {
-                    Console.WriteLine("Ошибка! Сотрудник с именем \"" + result + "\" уже существует.");
+                    Console.WriteLine(
+                        "Ошибка! Сотрудник с именем \""
+                        + result + "\" уже существует.");
                     continue;
                 }
 
