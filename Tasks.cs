@@ -69,6 +69,10 @@ namespace Lab2
             get { return this.department; }
             set
             {
+                if (this.department != null)
+                {
+                    this.department.RemoveEmployee(this);
+                }
                 this.department = value;
                 if (value != null)
                 {
@@ -121,6 +125,7 @@ namespace Lab2
         public Employee Boss
         {
             get { return this.boss; }
+            set { this.boss = value; }
         }
 
         public List<Employee> Employees
@@ -133,6 +138,15 @@ namespace Lab2
             if (!this.employees.Contains(employee))
             {
                 this.employees.Add(employee);
+            }
+        }
+
+        public void RemoveEmployee(Employee employee)
+        {
+            this.employees.Remove(employee);
+            if (this.boss == employee)
+            {
+                this.boss = null;
             }
         }
     }

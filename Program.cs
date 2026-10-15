@@ -8,25 +8,29 @@ namespace Lab2
         private static void Main(string[] args)
         {
             Console.WriteLine("=== Задание 1.4 Время ===");
-            int sec1 = ReadNonNegativeInt("Введите количество секунд: ");
-            Time time1 = new Time(sec1);
-            Console.WriteLine(time1);
-            int sec2 = ReadNonNegativeInt("Введите количество секунд: ");
-            Time time2 = new Time(sec2);
-            Console.WriteLine(time2);
-            int sec3 = ReadNonNegativeInt("Введите количество секунд: ");
-            Time time3 = new Time(sec3);
-            Console.WriteLine(time3);
+            int timeCount = ReadPositiveInt(
+                "Сколько значений времени вывести: ");
+            int timeIndex = 0;
+            int seconds = 0;
+            Time time = null;
+            for (timeIndex = 0; timeIndex < timeCount; timeIndex++)
+            {
+                seconds = ReadNonNegativeInt(
+                    "Введите количество секунд: ");
+                time = new Time(seconds);
+                Console.WriteLine(time);
+            }
 
             Console.WriteLine("\n=== Задание 1.5 Дом ===");
             ShowHouses("Введите количество домов: ");
 
             Console.WriteLine("\n=== Задание 2.4 Сотрудники и отделы ===");
             List<Employee> allEmployees = ReadEmployees();
-            WorkWithDepartment(allEmployees);
+            List<Department> departments =
+                WorkWithDepartment(allEmployees);
 
             Console.WriteLine("\n=== Задание 3.4 Список сотрудников отдела ===");
-            PrintDepartmentEmployees(allEmployees);
+            PrintDepartmentEmployees(departments);
 
             Console.WriteLine("\n=== Задание 4.3 Создаем Дом ===");
             ShowHouses("Введите количество домов: ");
@@ -88,71 +92,154 @@ namespace Lab2
             return employees;
         }
 
-        private static void WorkWithDepartment(
+        private static List<Department> WorkWithDepartment(
             List<Employee> employees)
         {
+            List<Department> departments =
+                new List<Department>();
             int command = -1;
             while (command != 0)
             {
-                Console.WriteLine("1 - Назначить отдел");
-                Console.WriteLine("2 - Вывести сотрудников отдела");
+                Console.WriteLine(
+                    "1 - Назначить сотрудника в отдел");
+                Console.WriteLine(
+                    "2 - Назначить начальника отдела");
+                Console.WriteLine(
+                    "3 - Вывести сотрудников отдела");
                 Console.WriteLine("0 - Продолжить");
-                command = ReadIntInRange("Команда: ", 0, 2);
+                command = ReadIntInRange("Команда: ", 0, 3);
                 if (command == 1)
                 {
-                    AssignDepartment(employees);
+                    AssignEmployee(employees, departments);
                 }
                 if (command == 2)
                 {
-                    PrintDepartmentEmployees(employees);
+                    AssignBoss(employees, departments);
                 }
+                if (command == 3)
+                {
+                    PrintDepartmentEmployees(departments);
+                }
+            }
+            return departments;
+        }
+
+        private static void AssignEmployee(
+            List<Employee> employees,
+            List<Department> departments)
+        {
+            Department department = SelectDepartment(departments);
+            string employeeName = ReadNonEmptyString(
+                "Введите имя сотрудника: ");
+            Employee employee = FindEmployee(
+                employees, employeeName);
+            while (employee == null)
+            {
+                Console.WriteLine("Такого сотрудника нет.");
+                employeeName = ReadNonEmptyString(
+                    "Введите имя сотрудника: ");
+                employee = FindEmployee(employees, employeeName);
+            }
+            employee.Department = department;
+            Console.WriteLine("Сотрудник назначен в отдел.");
+        }
+
+        private static Department SelectDepartment(
+            List<Department> departments)
+        {
+            int choice = 0;
+            string name = "";
+            Department department = null;
+            if (departments.Count == 0)
+            {
+                name = ReadNonEmptyString(
+                    "Введите название нового отдела: ");
+                department = new Department(name, null);
+                departments.Add(department);
+                return department;
+            }
+            Console.WriteLine("0 - Создать новый отдел");
+            PrintDepartmentNames(departments);
+            choice = ReadIntInRange(
+                "Выберите отдел: ", 0, departments.Count);
+            if (choice == 0)
+            {
+                name = ReadNonEmptyString(
+                    "Введите название нового отдела: ");
+                department = new Department(name, null);
+                departments.Add(department);
+                return department;
+            }
+            return departments[choice - 1];
+        }
+
+        private static void PrintDepartmentNames(
+            List<Department> departments)
+        {
+            int index = 0;
+            for (index = 0; index < departments.Count; index++)
+            {
+                Console.WriteLine((index + 1) + " - "
+                    + departments[index].Name);
             }
         }
 
-        private static void AssignDepartment(
-            List<Employee> employees)
+        private static void AssignBoss(
+            List<Employee> employees,
+            List<Department> departments)
         {
-            string departmentName = ReadNonEmptyString(
-                "Введите название отдела: ");
+            Department department = null;
+            if (departments.Count == 0)
+            {
+                Console.WriteLine(
+                    "Сначала назначьте сотрудника в отдел.");
+                return;
+            }
+            department = SelectExistingDepartment(departments);
             string bossName = ReadNonEmptyString(
                 "Введите имя начальника: ");
             Employee boss = FindEmployee(employees, bossName);
-            while (boss == null)
+            while (boss == null || boss.Department != department)
             {
-                Console.WriteLine("Такого сотрудника нет.");
+                Console.WriteLine(
+                    "Начальник должен быть сотрудником этого отдела.");
                 bossName = ReadNonEmptyString(
                     "Введите имя начальника: ");
                 boss = FindEmployee(employees, bossName);
             }
-            Department department = new Department(
-                departmentName, boss);
-            int index = 0;
-            for (index = 0; index < employees.Count; index++)
-            {
-                employees[index].Department = department;
-            }
-            Console.WriteLine("Отдел назначен.");
+            department.Boss = boss;
+            Console.WriteLine("Начальник назначен.");
+        }
+
+        private static Department SelectExistingDepartment(
+            List<Department> departments)
+        {
+            PrintDepartmentNames(departments);
+            int choice = ReadIntInRange(
+                "Выберите отдел: ", 1, departments.Count);
+            return departments[choice - 1];
         }
 
         private static void PrintDepartmentEmployees(
-            List<Employee> employees)
+            List<Department> departments)
         {
             int index = 0;
-            if (employees.Count == 0)
+            Department department = null;
+            if (departments.Count == 0)
             {
-                Console.WriteLine("Сотрудников нет.");
+                Console.WriteLine(
+                    "Сначала назначьте сотрудников в отдел.");
                 return;
             }
-            if (employees[0].Department == null)
+            department = SelectExistingDepartment(departments);
+            if (department.Employees.Count == 0)
             {
-                Console.WriteLine("Сначала назначьте отдел командой 1.");
+                Console.WriteLine("В отделе нет сотрудников.");
                 return;
             }
-            List<Employee> departmentEmployees =
-                employees[0].GetDepartmentEmployees();
-            for (index = 0; index < departmentEmployees.Count; index++)
+            for (index = 0; index < department.Employees.Count; index++)
             {
-                Console.WriteLine(departmentEmployees[index]);
+                Console.WriteLine(department.Employees[index]);
             }
         }
 
