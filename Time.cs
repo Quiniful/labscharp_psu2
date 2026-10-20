@@ -4,24 +4,24 @@ namespace Lab2
 {
     internal class Time
     {
-        private int seconds;
+        private int _seconds;
 
         public Time(int seconds)
         {
-            this.seconds = seconds;
+            _seconds = seconds;
         }
 
         public int Seconds
         {
             get
             {
-                return this.seconds;
+                return _seconds;
             }
         }
 
         public override string ToString()
         {
-            int totalSeconds = this.seconds % 86400;
+            int totalSeconds = _seconds % 86400;
             if (totalSeconds < 0)
             {
                 totalSeconds += 86400;

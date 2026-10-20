@@ -5,22 +5,22 @@ namespace Lab2
 {
     internal class Department
     {
-        private string name;
-        private Employee boss;
-        private List<Employee> employees;
+        private string _name;
+        private Employee _boss;
+        private List<Employee> _employees;
 
         public Department(string name, Employee boss)
         {
-            this.name = name;
-            this.boss = boss;
-            this.employees = new List<Employee>();
+            _name = name;
+            _boss = boss;
+            _employees = new List<Employee>();
         }
 
         public string Name
         {
             get
             {
-                return this.name;
+                return _name;
             }
         }
 
@@ -28,11 +28,11 @@ namespace Lab2
         {
             get
             {
-                return this.boss;
+                return _boss;
             }
             set
             {
-                this.boss = value;
+                _boss = value;
             }
         }
 
@@ -40,29 +40,29 @@ namespace Lab2
         {
             get
             {
-                return this.employees;
+                return _employees;
             }
         }
 
         public override string ToString()
         {
-            return this.name;
+            return _name;
         }
 
         public void AddEmployee(Employee employee)
         {
-            if (!this.employees.Contains(employee))
+            if (!_employees.Contains(employee))
             {
-                this.employees.Add(employee);
+                _employees.Add(employee);
             }
         }
 
         public void RemoveEmployee(Employee employee)
         {
-            this.employees.Remove(employee);
-            if (this.boss == employee)
+            _employees.Remove(employee);
+            if (_boss == employee)
             {
-                this.boss = null;
+                _boss = null;
             }
         }
     }

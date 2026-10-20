@@ -5,20 +5,20 @@ namespace Lab2
 {
     internal class Employee
     {
-        private string name;
-        private Department department;
+        private string _name;
+        private Department _department;
 
         public Employee(string name)
         {
-            this.name = name;
-            this.department = null;
+            _name = name;
+            _department = null;
         }
 
         public string Name
         {
             get
             {
-                return this.name;
+                return _name;
             }
         }
 
@@ -26,19 +26,19 @@ namespace Lab2
         {
             get
             {
-                return this.department;
+                return _department;
             }
             set
             {
-                if (this.department == value)
+                if (_department == value)
                 {
                     return;
                 }
-                if (this.department != null)
+                if (_department != null)
                 {
-                    this.department.RemoveEmployee(this);
+                    _department.RemoveEmployee(this);
                 }
-                this.department = value;
+                _department = value;
                 if (value != null)
                 {
                     value.AddEmployee(this);
@@ -48,33 +48,33 @@ namespace Lab2
 
         public List<Employee> GetDepartmentEmployees()
         {
-            if (this.department == null)
+            if (_department == null)
             {
                 return new List<Employee>();
             }
-            return this.department.Employees;
+            return _department.Employees;
         }
 
         public override string ToString()
         {
-            if (this.department == null)
+            if (_department == null)
             {
-                return this.name + " не работает в отделе";
+                return _name + " не работает в отделе";
             }
-            if (this.department.Boss == this)
+            if (_department.Boss == this)
             {
-                return this.name + " начальник отдела "
-                    + this.department.Name;
+                return _name + " начальник отдела "
+                    + _department.Name;
             }
-            if (this.department.Boss == null)
+            if (_department.Boss == null)
             {
-                return this.name + " работает в отделе "
-                    + this.department.Name
+                return _name + " работает в отделе "
+                    + _department.Name
                     + ", начальник не назначен";
             }
-            return this.name + " работает в отделе "
-                + this.department.Name + ", начальник которого "
-                + this.department.Boss.Name;
+            return _name + " работает в отделе "
+                + _department.Name + ", начальник которого "
+                + _department.Boss.Name;
         }
     }
 }

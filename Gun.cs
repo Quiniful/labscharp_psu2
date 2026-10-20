@@ -4,37 +4,37 @@ namespace Lab2
 {
     internal class Gun
     {
-        private int bullets;
+        private int _bullets;
 
         public Gun()
         {
-            this.bullets = 5;
+            _bullets = 5;
         }
 
         public Gun(int bullets)
         {
-            this.bullets = bullets;
+            _bullets = bullets;
         }
 
         public int Bullets
         {
             get
             {
-                return this.bullets;
+                return _bullets;
             }
         }
 
         public override string ToString()
         {
-            return "Патронов: " + this.bullets;
+            return "Патронов: " + _bullets;
         }
 
         public void Shoot()
         {
-            if (this.bullets > 0)
+            if (_bullets > 0)
             {
                 Console.WriteLine("Бах!");
-                this.bullets = this.bullets - 1;
+                _bullets = _bullets - 1;
             }
             else
             {
