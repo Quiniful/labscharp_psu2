@@ -7,6 +7,19 @@ namespace Lab2
     {
         private static void Main(string[] args)
         {
+            Program program = new Program();
+            try
+            {
+                program.Run();
+            }
+            catch (System.IO.EndOfStreamException)
+            {
+                Console.WriteLine("Ввод завершён.");
+            }
+        }
+
+        private void Run()
+        {
             Console.WriteLine("=== Задание 1.4 Время ===");
             int timeCount = ReadPositiveInt(
                 "Сколько значений времени вывести: ");
@@ -34,7 +47,7 @@ namespace Lab2
             Console.WriteLine(
                 "\n=== Задание 3.4 Список "
                 + "сотрудников отдела ===");
-            PrintDepartmentEmployees(departments);
+            PrintEmployeesFromEmployee(allEmployees);
 
             Console.WriteLine(
                 "\n=== Задание 4.3 Создаем Дом ===");
@@ -73,7 +86,7 @@ namespace Lab2
             }
         }
 
-        private static void ShowHouses(string message)
+        private void ShowHouses(string message)
         {
             int count = ReadPositiveInt(message);
             int index = 0;
@@ -88,7 +101,7 @@ namespace Lab2
             }
         }
 
-        private static List<Employee> ReadEmployees()
+        private List<Employee> ReadEmployees()
         {
             List<Employee> employees = new List<Employee>();
             int count = ReadPositiveInt(
@@ -106,7 +119,7 @@ namespace Lab2
             return employees;
         }
 
-        private static List<Department> WorkWithDepartment(
+        private List<Department> WorkWithDepartment(
             List<Employee> employees)
         {
             List<Department> departments =
@@ -138,7 +151,7 @@ namespace Lab2
             return departments;
         }
 
-        private static void AssignEmployee(
+        private void AssignEmployee(
             List<Employee> employees,
             List<Department> departments)
         {
@@ -159,7 +172,7 @@ namespace Lab2
             Console.WriteLine("Сотрудник назначен в отдел.");
         }
 
-        private static Department SelectDepartment(
+        private Department SelectDepartment(
             List<Department> departments)
         {
             int choice = 0;
@@ -188,7 +201,7 @@ namespace Lab2
             return departments[choice - 1];
         }
 
-        private static void PrintDepartmentNames(
+        private void PrintDepartmentNames(
             List<Department> departments)
         {
             int index = 0;
@@ -199,7 +212,7 @@ namespace Lab2
             }
         }
 
-        private static void AssignBoss(
+        private void AssignBoss(
             List<Employee> employees,
             List<Department> departments)
         {
@@ -227,7 +240,7 @@ namespace Lab2
             Console.WriteLine("Начальник назначен.");
         }
 
-        private static Department SelectExistingDepartment(
+        private Department SelectExistingDepartment(
             List<Department> departments)
         {
             PrintDepartmentNames(departments);
@@ -236,7 +249,7 @@ namespace Lab2
             return departments[choice - 1];
         }
 
-        private static void PrintDepartmentEmployees(
+        private void PrintDepartmentEmployees(
             List<Department> departments)
         {
             int index = 0;
@@ -260,7 +273,34 @@ namespace Lab2
             }
         }
 
-        private static Employee FindEmployee(
+        private void PrintEmployeesFromEmployee(
+            List<Employee> employees)
+        {
+            string name = ReadNonEmptyString(
+                "Введите имя сотрудника: ");
+            Employee employee = FindEmployee(employees, name);
+            List<Employee> colleagues = new List<Employee>();
+            int index = 0;
+            while (employee == null)
+            {
+                Console.WriteLine("Такого сотрудника нет.");
+                name = ReadNonEmptyString(
+                    "Введите имя сотрудника: ");
+                employee = FindEmployee(employees, name);
+            }
+            colleagues = employee.GetDepartmentEmployees();
+            if (colleagues.Count == 0)
+            {
+                Console.WriteLine(
+                    "Сотрудник не назначен в отдел.");
+            }
+            for (index = 0; index < colleagues.Count; index++)
+            {
+                Console.WriteLine(colleagues[index]);
+            }
+        }
+
+        private Employee FindEmployee(
             List<Employee> employees, string name)
         {
             int i = 0;
@@ -274,20 +314,19 @@ namespace Lab2
             return null;
         }
 
-        private static int ReadNonNegativeInt(string message)
+        private int ReadNonNegativeInt(string message)
         {
             int result = 0;
             bool ok = false;
+            string input = "";
             while (!ok)
             {
                 Console.Write(message);
-                string input = Console.ReadLine();
+                input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine(
-                        "Ошибка! Ввод прерван. "
-                        + "Попробуйте ещё раз.");
-                    continue;
+                    throw new System.IO.EndOfStreamException(
+                        "Ввод завершён.");
                 }
                 input = input.Trim();
                 if (input == "")
@@ -315,20 +354,19 @@ namespace Lab2
             return result;
         }
 
-        private static int ReadPositiveInt(string message)
+        private int ReadPositiveInt(string message)
         {
             int result = 0;
             bool ok = false;
+            string input = "";
             while (!ok)
             {
                 Console.Write(message);
-                string input = Console.ReadLine();
+                input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine(
-                        "Ошибка! Ввод прерван. "
-                        + "Попробуйте ещё раз.");
-                    continue;
+                    throw new System.IO.EndOfStreamException(
+                        "Ввод завершён.");
                 }
                 input = input.Trim();
                 if (input == "")
@@ -356,21 +394,20 @@ namespace Lab2
             return result;
         }
 
-        private static int ReadIntInRange(
+        private int ReadIntInRange(
             string message, int min, int max)
         {
             int result = 0;
             bool ok = false;
+            string input = "";
             while (!ok)
             {
                 Console.Write(message);
-                string input = Console.ReadLine();
+                input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine(
-                        "Ошибка! Ввод прерван. "
-                        + "Попробуйте ещё раз.");
-                    continue;
+                    throw new System.IO.EndOfStreamException(
+                        "Ввод завершён.");
                 }
                 input = input.Trim();
                 if (input == "")
@@ -398,19 +435,18 @@ namespace Lab2
             return result;
         }
 
-        private static string ReadNonEmptyString(string message)
+        private string ReadNonEmptyString(string message)
         {
             string result = "";
+            string input = "";
             while (true)
             {
                 Console.Write(message);
-                string input = Console.ReadLine();
+                input = Console.ReadLine();
                 if (input == null)
                 {
-                    Console.WriteLine(
-                        "Ошибка! Ввод прерван. "
-                        + "Попробуйте ещё раз.");
-                    continue;
+                    throw new System.IO.EndOfStreamException(
+                        "Ввод завершён.");
                 }
                 input = input.Trim();
                 if (input == "")
@@ -425,16 +461,16 @@ namespace Lab2
             return result;
         }
 
-        private static string ReadUniqueName(
+        private string ReadUniqueName(
             string message, List<Employee> employees)
         {
             string result = "";
+            bool exists = false;
+            int k = 0;
             while (true)
             {
                 result = ReadNonEmptyString(message);
-
-                bool exists = false;
-                int k = 0;
+                exists = false;
                 for (k = 0; k < employees.Count; k++)
                 {
                     if (employees[k].Name == result)

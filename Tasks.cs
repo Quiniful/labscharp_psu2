@@ -12,9 +12,21 @@ namespace Lab2
             this.seconds = seconds;
         }
 
+        public int Seconds
+        {
+            get
+            {
+                return this.seconds;
+            }
+        }
+
         public override string ToString()
         {
             int totalSeconds = this.seconds % 86400;
+            if (totalSeconds < 0)
+            {
+                totalSeconds += 86400;
+            }
             int hours = totalSeconds / 3600;
             int minutes = (totalSeconds % 3600) / 60;
             int secs = totalSeconds % 60;
@@ -36,7 +48,10 @@ namespace Lab2
 
         public int Floors
         {
-            get { return this.floors; }
+            get
+            {
+                return this.floors;
+            }
         }
 
         public override string ToString()
@@ -63,14 +78,24 @@ namespace Lab2
 
         public string Name
         {
-            get { return this.name; }
+            get
+            {
+                return this.name;
+            }
         }
 
         public Department Department
         {
-            get { return this.department; }
+            get
+            {
+                return this.department;
+            }
             set
             {
+                if (this.department == value)
+                {
+                    return;
+                }
                 if (this.department != null)
                 {
                     this.department.RemoveEmployee(this);
@@ -103,6 +128,12 @@ namespace Lab2
                 return this.name + " начальник отдела "
                     + this.department.Name;
             }
+            if (this.department.Boss == null)
+            {
+                return this.name + " работает в отделе "
+                    + this.department.Name
+                    + ", начальник не назначен";
+            }
             return this.name + " работает в отделе "
                 + this.department.Name + ", начальник которого "
                 + this.department.Boss.Name;
@@ -124,18 +155,35 @@ namespace Lab2
 
         public string Name
         {
-            get { return this.name; }
+            get
+            {
+                return this.name;
+            }
         }
 
         public Employee Boss
         {
-            get { return this.boss; }
-            set { this.boss = value; }
+            get
+            {
+                return this.boss;
+            }
+            set
+            {
+                this.boss = value;
+            }
         }
 
         public List<Employee> Employees
         {
-            get { return this.employees; }
+            get
+            {
+                return this.employees;
+            }
+        }
+
+        public override string ToString()
+        {
+            return this.name;
         }
 
         public void AddEmployee(Employee employee)
@@ -168,6 +216,19 @@ namespace Lab2
         public Gun(int bullets)
         {
             this.bullets = bullets;
+        }
+
+        public int Bullets
+        {
+            get
+            {
+                return this.bullets;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "Патронов: " + this.bullets;
         }
 
         public void Shoot()
